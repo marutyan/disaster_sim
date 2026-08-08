@@ -3,8 +3,8 @@
 import {
   advanceSimulation,
   createSimulationRun,
-  setTimeScale,
   type SimulationRun,
+  setTimeScale,
   type TimeScale,
 } from "@disaster-sim/domain";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,7 @@ import { loadStoredSetup, type StoredSetup } from "../../lib/storage";
 import { EvidenceBadge } from "./EvidenceBadge";
 import { MapView } from "./MapView";
 import { TimeControls } from "./TimeControls";
-import { WorldView, type WorldCameraMode } from "./WorldView";
+import { type WorldCameraMode, WorldView } from "./WorldView";
 
 type ViewMode = WorldCameraMode | "map";
 
@@ -76,6 +76,9 @@ export function SimulationShell() {
   );
   const distance = distanceMeters(player, target);
   const targetReached = distance <= 40;
+  const runReady = run !== null;
+  const currentPhase = run?.phase ?? null;
+  const personPreset = setup?.person ?? null;
 
   useEffect(() => {
     const stored = loadStoredSetup(window.localStorage);
@@ -100,52 +103,75 @@ export function SimulationShell() {
         schedule,
       }),
     );
-    setReducedMotion(window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+    setReducedMotion(
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+    );
   }, [router]);
 
   useEffect(() => {
-    if (!run) {
+    if (!runReady) {
       return;
     }
     const timer = window.setInterval(() => {
-      setRun((current) => (current ? advanceSimulation(current, 100) : current));
+      setRun((current) =>
+        current ? advanceSimulation(current, 100) : current,
+      );
     }, 100);
     return () => window.clearInterval(timer);
-  }, [run?.config.identity.scenarioId]);
+  }, [runReady]);
 
   useEffect(() => {
+    if (!currentPhase || viewMode === "map") {
+      return;
+    }
+
     function keyDown(event: KeyboardEvent) {
-      if (!run || viewMode === "map") {
-        return;
-      }
       const key = event.key.toLowerCase();
-      if (!["w", "a", "s", "d", "arrowup", "arrowdown", "arrowleft", "arrowright"].includes(key)) {
+      if (
+        ![
+          "w",
+          "a",
+          "s",
+          "d",
+          "arrowup",
+          "arrowdown",
+          "arrowleft",
+          "arrowright",
+        ].includes(key)
+      ) {
         return;
       }
       event.preventDefault();
-      const baseStep = run.phase === "shaking" ? 0.75 : 7;
-      const step = setup?.person === "older_adult" ? baseStep * 0.7 : baseStep;
+      const baseStep = currentPhase === "shaking" ? 0.75 : 7;
+      const step = personPreset === "older_adult" ? baseStep * 0.7 : baseStep;
       const delta = { east: 0, north: 0 };
       if (key === "w" || key === "arrowup") delta.north += step;
       if (key === "s" || key === "arrowdown") delta.north -= step;
       if (key === "d" || key === "arrowright") delta.east += step;
       if (key === "a" || key === "arrowleft") delta.east -= step;
       setPlayer((current) => {
-        const next = { east: current.east + delta.east, north: current.north + delta.north };
+        const next = {
+          east: current.east + delta.east,
+          north: current.north + delta.north,
+        };
         setRoute((currentRoute) => [...currentRoute, next]);
         return next;
       });
     }
+
     window.addEventListener("keydown", keyDown);
     return () => window.removeEventListener("keydown", keyDown);
-  }, [run, setup?.person, viewMode]);
+  }, [currentPhase, personPreset, viewMode]);
 
   if (!setup || !run) {
-    return <main className="simulation-loading">体験条件を読み込んでいます…</main>;
+    return (
+      <main className="simulation-loading">体験条件を読み込んでいます…</main>
+    );
   }
 
   const lastEvent = run.events.at(-1);
-  const replayActive = run.phase === "hazard_replay" || run.phase === "resolved";
+  const replayActive =
+    run.phase === "hazard_replay" || run.phase === "resolved";
 
   function setScale(scale: TimeScale) {
     setRun((current) => (current ? setTimeScale(current, scale) : current));
@@ -175,7 +201,9 @@ export function SimulationShell() {
     <main className={`simulation-shell phase-${run.phase}`}>
       <header className="simulation-topbar">
         <div>
-          <a className="brand-link" href="/">防災疑似体験</a>
+          <a className="brand-link" href="/">
+            防災疑似体験
+          </a>
           <span className="training-inline">平時の訓練用</span>
         </div>
         <div className="simulation-clock" aria-live="polite">
@@ -216,12 +244,20 @@ export function SimulationShell() {
             <span className="status-label">避難目標まで</span>
             <strong>{Math.round(distance)} m</strong>
             <span className={targetReached ? "safe-text" : "muted-text"}>
-              {targetReached ? "デモ避難目標に到達" : DEMO_SCENARIO.evacuationTarget.label}
+              {targetReached
+                ? "デモ避難目標に到達"
+                : DEMO_SCENARIO.evacuationTarget.label}
             </span>
           </div>
           <div className="status-section compact-status">
-            <span>身体</span><strong>{run.injuryState === "none" ? "無傷" : run.injuryState}</strong>
-            <span>端末</span><strong>{setup.preparedness.mobileBattery ? "予備電源あり" : "通常電池"}</strong>
+            <span>身体</span>
+            <strong>
+              {run.injuryState === "none" ? "無傷" : run.injuryState}
+            </strong>
+            <span>端末</span>
+            <strong>
+              {setup.preparedness.mobileBattery ? "予備電源あり" : "通常電池"}
+            </strong>
           </div>
           {lastEvent ? (
             <div className="status-section event-status">
@@ -235,13 +271,17 @@ export function SimulationShell() {
         {run.phase === "shaking" ? (
           <div className="hazard-alert" role="alert">
             <strong>強い揺れ</strong>
-            <span>無理に走らず、姿勢を低くして周囲の落下物に注意してください。</span>
+            <span>
+              無理に走らず、姿勢を低くして周囲の落下物に注意してください。
+            </span>
           </div>
         ) : null}
         {replayActive ? (
           <div className="hazard-alert tsunami-alert" role="status">
             <strong>津波Replay</strong>
-            <span>水面の時間変化は演出です。公式な地点別到達時刻ではありません。</span>
+            <span>
+              水面の時間変化は演出です。公式な地点別到達時刻ではありません。
+            </span>
             <EvidenceBadge evidenceClass="illustrative" />
           </div>
         ) : null}
@@ -249,7 +289,11 @@ export function SimulationShell() {
 
       <footer className="simulation-footer">
         <div className="control-help">
-          <strong>{viewMode === "map" ? "地図をクリックして移動" : "WASD / 矢印キーで移動"}</strong>
+          <strong>
+            {viewMode === "map"
+              ? "地図をクリックして移動"
+              : "WASD / 矢印キーで移動"}
+          </strong>
           <span>{DEMO_DATA_NOTICE}</span>
         </div>
         <div className="simulation-settings">
