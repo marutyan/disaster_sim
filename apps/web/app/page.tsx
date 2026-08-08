@@ -21,20 +21,22 @@ export default function HomePage() {
           </p>
           <div className="training-notice" role="note">
             <strong>これは平時の訓練用です。</strong>
-            <span>実際の災害時は自治体・気象庁など公的機関の情報を優先してください。</span>
+            <span>
+              実際の災害時は自治体・気象庁など公的機関の情報を優先してください。
+            </span>
           </div>
           <Link className="primary-action" href="/setup">
             体験を始める
           </Link>
         </div>
-        <div className="landing-principles" aria-label="このアプリの方針">
+        <section className="landing-principles" aria-label="このアプリの方針">
           {principles.map((principle, index) => (
             <div key={principle}>
               <span>{String(index + 1).padStart(2, "0")}</span>
               <p>{principle}</p>
             </div>
           ))}
-        </div>
+        </section>
       </section>
       <footer className="landing-footer">
         <span>初期MVP: 徳島市デモ領域 / 地震 → 津波避難</span>
