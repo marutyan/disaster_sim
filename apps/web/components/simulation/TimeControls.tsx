@@ -10,8 +10,7 @@ export function TimeControls({
   onChange: (scale: TimeScale) => void;
 }) {
   return (
-    <fieldset className="segmented-control">
-      <legend className="visually-hidden">シミュレーション速度</legend>
+    <fieldset className="segmented-control" aria-label="シミュレーション速度">
       {scales.map((scale) => (
         <button
           key={scale}
