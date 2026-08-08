@@ -11,9 +11,12 @@
   },
   "dependencies": {
     "@disaster-sim/domain": "workspace:*",
+    "cesium": "1.143.0",
+    "maplibre-gl": "5.24.0",
     "next": "16.2.11",
     "react": "19.2.7",
-    "react-dom": "19.2.7"
+    "react-dom": "19.2.7",
+    "three": "0.184.0"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
