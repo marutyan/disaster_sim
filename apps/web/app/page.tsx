@@ -17,7 +17,9 @@ export default function HomePage() {
         </p>
         <div className="training-notice" role="note">
           <strong>これは平時の訓練用です。</strong>
-          <span>実際の災害時は自治体・気象庁など公的機関の情報を優先してください。</span>
+          <span>
+            実際の災害時は自治体・気象庁など公的機関の情報を優先してください。
+          </span>
         </div>
         <ul className="principles">
           {principles.map((principle) => (

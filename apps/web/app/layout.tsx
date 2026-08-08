@@ -8,7 +8,9 @@ export const metadata: Metadata = {
   description: "自分の生活圏で災害と避難判断を追体験する平時の防災訓練アプリ",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
     <html lang="ja">
       <body>{children}</body>
