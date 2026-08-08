@@ -155,13 +155,13 @@ export function MapView({ player, onMove }: MapViewProps) {
   }, [player]);
 
   return (
-    <div className="map-frame" aria-label="避難経路を操作する2D地図">
+    <section className="map-frame" aria-label="避難経路を操作する2D地図">
       <div className="map-canvas" ref={containerRef} />
       <div className="map-legend">
         <span><i className="legend-player" />現在地</span>
         <span><i className="legend-target" />避難目標</span>
         <span><i className="legend-hazard" />最大浸水Envelope（合成fixture）</span>
       </div>
-    </div>
+    </section>
   );
 }
