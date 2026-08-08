@@ -3,11 +3,12 @@
 import { useRouter } from "next/navigation";
 import { type FormEvent, useState } from "react";
 
-import { DEMO_DATA_NOTICE, DEMO_SCENARIO } from "../../lib/demo-scenario";
 import {
-  saveStoredSetup,
-  type StoredSetup,
-} from "../../lib/storage";
+  DEMO_DATA_NOTICE,
+  DEMO_SCENARIO,
+  isInsideDemoBounds,
+} from "../../lib/demo-scenario";
+import { saveStoredSetup, type StoredSetup } from "../../lib/storage";
 
 const defaultSetup: StoredSetup = {
   version: 1,
@@ -35,6 +36,12 @@ export default function SetupPage() {
 
   function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (!isInsideDemoBounds(setup.location)) {
+      setLocationMessage(
+        "このfixture MVPでは徳島市デモ領域内の地点だけを開始地点にできます。デモ地点へ戻すか、表示範囲内の緯度経度を指定してください。",
+      );
+      return;
+    }
     saveStoredSetup(window.localStorage, setup);
     router.push("/simulate");
   }
@@ -47,25 +54,42 @@ export default function SetupPage() {
     setLocationMessage("現在地を取得しています…");
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        setSetup((current) => ({
-          ...current,
-          location: {
-            label: "現在地",
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
-          },
-        }));
+        const location = {
+          label: "現在地",
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        };
+        if (!isInsideDemoBounds(location)) {
+          setLocationMessage(
+            "現在地は合成デモ領域の外です。このMVPでは実地域の災害形状をまだ利用しないため、現在地へ移動せずデモ地点を維持します。",
+          );
+          return;
+        }
+        setSetup((current) => ({ ...current, location }));
         setLocationMessage("現在地をブラウザ内の体験条件へ反映しました。");
       },
-      () => setLocationMessage("現在地を取得できませんでした。手動で指定してください。"),
+      () =>
+        setLocationMessage(
+          "現在地を取得できませんでした。デモ領域内の地点を手動で指定してください。",
+        ),
       { enableHighAccuracy: true, timeout: 8_000 },
     );
+  }
+
+  function resetDemoLocation() {
+    setSetup((current) => ({
+      ...current,
+      location: { ...defaultSetup.location },
+    }));
+    setLocationMessage("合成デモ領域の中心地点へ戻しました。");
   }
 
   return (
     <main className="setup-shell">
       <header className="product-header">
-        <a className="brand-link" href="/">防災疑似体験</a>
+        <a className="brand-link" href="/">
+          防災疑似体験
+        </a>
         <p>平時の訓練用</p>
       </header>
 
@@ -93,7 +117,9 @@ export default function SetupPage() {
         <section className="form-section" aria-labelledby="location-heading">
           <div>
             <h2 id="location-heading">開始地点</h2>
-            <p>位置情報は既定ではブラウザ内だけに保存します。</p>
+            <p>
+              位置情報は既定ではブラウザ内だけに保存します。fixture MVPでは合成デモ領域内だけを選べます。
+            </p>
           </div>
           <div className="field-grid three-columns">
             <label>
@@ -113,8 +139,8 @@ export default function SetupPage() {
               <input
                 type="number"
                 step="0.000001"
-                min="-90"
-                max="90"
+                min={DEMO_SCENARIO.bounds.south}
+                max={DEMO_SCENARIO.bounds.north}
                 value={setup.location.latitude}
                 onChange={(event) =>
                   setSetup((current) => ({
@@ -132,8 +158,8 @@ export default function SetupPage() {
               <input
                 type="number"
                 step="0.000001"
-                min="-180"
-                max="180"
+                min={DEMO_SCENARIO.bounds.west}
+                max={DEMO_SCENARIO.bounds.east}
                 value={setup.location.longitude}
                 onChange={(event) =>
                   setSetup((current) => ({
@@ -148,18 +174,26 @@ export default function SetupPage() {
             </label>
           </div>
           <div className="inline-actions">
-            <button className="secondary-button" type="button" onClick={useCurrentLocation}>
+            <button
+              className="secondary-button"
+              type="button"
+              onClick={useCurrentLocation}
+            >
               現在地を使う
             </button>
             <button
               className="text-button"
               type="button"
-              onClick={() => setSetup(defaultSetup)}
+              onClick={resetDemoLocation}
             >
               デモ地点に戻す
             </button>
           </div>
-          {locationMessage ? <p className="field-message">{locationMessage}</p> : null}
+          {locationMessage ? (
+            <p className="field-message" aria-live="polite">
+              {locationMessage}
+            </p>
+          ) : null}
         </section>
 
         <section className="form-section" aria-labelledby="person-heading">
