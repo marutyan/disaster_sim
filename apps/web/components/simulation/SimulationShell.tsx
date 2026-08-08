@@ -169,9 +169,11 @@ export function SimulationShell() {
     );
   }
 
-  const lastEvent = run.events.at(-1);
+  const activeSetup = setup;
+  const activeRun = run;
+  const lastEvent = activeRun.events.at(-1);
   const replayActive =
-    run.phase === "hazard_replay" || run.phase === "resolved";
+    activeRun.phase === "hazard_replay" || activeRun.phase === "resolved";
 
   function setScale(scale: TimeScale) {
     setRun((current) => (current ? setTimeScale(current, scale) : current));
@@ -185,20 +187,20 @@ export function SimulationShell() {
   function finish() {
     saveStoredReview(window.sessionStorage, {
       version: 1,
-      setup,
-      seed: setup.seed,
-      elapsedSimulationMs: run.simulationTimeMs,
+      setup: activeSetup,
+      seed: activeSetup.seed,
+      elapsedSimulationMs: activeRun.simulationTimeMs,
       targetReached,
       targetDistanceMeters: distance,
-      events: run.events,
+      events: activeRun.events,
       route,
-      injuryState: run.injuryState,
+      injuryState: activeRun.injuryState,
     });
     router.push("/review");
   }
 
   return (
-    <main className={`simulation-shell phase-${run.phase}`}>
+    <main className={`simulation-shell phase-${activeRun.phase}`}>
       <header className="simulation-topbar">
         <div>
           <a className="brand-link" href="/">
@@ -207,10 +209,10 @@ export function SimulationShell() {
           <span className="training-inline">平時の訓練用</span>
         </div>
         <div className="simulation-clock" aria-live="polite">
-          <strong>{formatSimulationTime(run.simulationTimeMs)}</strong>
-          <span>{phaseLabel(run.phase)}</span>
+          <strong>{formatSimulationTime(activeRun.simulationTimeMs)}</strong>
+          <span>{phaseLabel(activeRun.phase)}</span>
         </div>
-        <TimeControls value={run.timeScale} onChange={setScale} />
+        <TimeControls value={activeRun.timeScale} onChange={setScale} />
       </header>
 
       <section className="simulation-stage">
@@ -223,8 +225,8 @@ export function SimulationShell() {
             fov={fov}
             reducedMotion={reducedMotion}
             replayActive={replayActive}
-            phase={run.phase}
-            simulationTimeMs={run.simulationTimeMs}
+            phase={activeRun.phase}
+            simulationTimeMs={activeRun.simulationTimeMs}
           />
         )}
 
@@ -254,11 +256,11 @@ export function SimulationShell() {
           <div className="status-section compact-status">
             <span>身体</span>
             <strong>
-              {run.injuryState === "none" ? "無傷" : run.injuryState}
+              {activeRun.injuryState === "none" ? "無傷" : activeRun.injuryState}
             </strong>
             <span>端末</span>
             <strong>
-              {setup.preparedness.mobileBattery ? "予備電源あり" : "通常電池"}
+              {activeSetup.preparedness.mobileBattery ? "予備電源あり" : "通常電池"}
             </strong>
           </div>
           {lastEvent ? (
@@ -270,7 +272,7 @@ export function SimulationShell() {
           ) : null}
         </aside>
 
-        {run.phase === "shaking" ? (
+        {activeRun.phase === "shaking" ? (
           <div className="hazard-alert" role="alert">
             <strong>強い揺れ</strong>
             <span>
