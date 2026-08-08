@@ -72,7 +72,10 @@ function assertSchedule(schedule: SimulationSchedule): void {
   }
 }
 
-function phaseAt(timeMs: number, schedule: SimulationSchedule): SimulationPhase {
+function phaseAt(
+  timeMs: number,
+  schedule: SimulationSchedule,
+): SimulationPhase {
   if (timeMs >= schedule.resolveAtMs) {
     return "resolved";
   }
@@ -185,7 +188,10 @@ export function advanceSimulation(
 
   const previousTimeMs = run.simulationTimeMs;
   const unclampedTimeMs = previousTimeMs + simulationAdvanceMs;
-  const simulationTimeMs = Math.min(unclampedTimeMs, run.config.schedule.resolveAtMs);
+  const simulationTimeMs = Math.min(
+    unclampedTimeMs,
+    run.config.schedule.resolveAtMs,
+  );
   const newEvents = eventsCrossed(
     previousTimeMs,
     simulationTimeMs,
@@ -196,7 +202,8 @@ export function advanceSimulation(
     ...run,
     simulationTimeMs,
     phase: phaseAt(simulationTimeMs, run.config.schedule),
-    tickRemainderMs: simulationTimeMs >= run.config.schedule.resolveAtMs ? 0 : tickRemainderMs,
+    tickRemainderMs:
+      simulationTimeMs >= run.config.schedule.resolveAtMs ? 0 : tickRemainderMs,
     events: [...run.events, ...newEvents],
   };
 }
