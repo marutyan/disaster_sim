@@ -26,20 +26,26 @@ export default function ReviewPage() {
     return (
       <main className="review-empty">
         <h1>振り返る体験がありません</h1>
-        <button className="primary-button" type="button" onClick={() => router.push("/setup")}>
+        <button
+          className="primary-button"
+          type="button"
+          onClick={() => router.push("/setup")}
+        >
           体験条件を設定する
         </button>
       </main>
     );
   }
 
+  const currentReview = review;
+
   function retrySameSeed() {
-    saveStoredSetup(window.localStorage, review.setup);
+    saveStoredSetup(window.localStorage, currentReview.setup);
     router.push("/simulate");
   }
 
   function retryNewSeed() {
-    const setup = { ...review.setup, seed: crypto.randomUUID() };
+    const setup = { ...currentReview.setup, seed: crypto.randomUUID() };
     saveStoredSetup(window.localStorage, setup);
     router.push("/simulate");
   }
@@ -48,10 +54,16 @@ export default function ReviewPage() {
     <main className="review-shell">
       <header className="review-header">
         <div>
-          <a className="brand-link" href="/">防災疑似体験</a>
+          <a className="brand-link" href="/">
+            防災疑似体験
+          </a>
           <span className="training-inline">振り返り</span>
         </div>
-        <button className="secondary-button" type="button" onClick={() => router.push("/setup")}>
+        <button
+          className="secondary-button"
+          type="button"
+          onClick={() => router.push("/setup")}
+        >
           条件を変更
         </button>
       </header>
@@ -64,14 +76,16 @@ export default function ReviewPage() {
         </p>
       </section>
 
-      <OutcomePanel review={review} />
+      <OutcomePanel review={currentReview} />
 
       <section className="review-section">
         <div className="section-heading">
           <h2>時系列</h2>
-          <p>authoritative eventと演出イベントを同じタイムライン上で区別します。</p>
+          <p>
+            authoritative eventと演出イベントを同じタイムライン上で区別します。
+          </p>
         </div>
-        <Timeline events={review.events} />
+        <Timeline events={currentReview.events} />
       </section>
 
       <section className="review-section review-details">
@@ -79,11 +93,26 @@ export default function ReviewPage() {
           <h2>この体験の条件</h2>
         </div>
         <dl>
-          <div><dt>Seed</dt><dd>{review.seed}</dd></div>
-          <div><dt>人物</dt><dd>{review.setup.person}</dd></div>
-          <div><dt>時間帯</dt><dd>{review.setup.timeOfDay}</dd></div>
-          <div><dt>経路ログ</dt><dd>{review.route.length} points</dd></div>
-          <div><dt>終了時刻</dt><dd>{Math.round(review.elapsedSimulationMs / 1000)} 秒</dd></div>
+          <div>
+            <dt>Seed</dt>
+            <dd>{currentReview.seed}</dd>
+          </div>
+          <div>
+            <dt>人物</dt>
+            <dd>{currentReview.setup.person}</dd>
+          </div>
+          <div>
+            <dt>時間帯</dt>
+            <dd>{currentReview.setup.timeOfDay}</dd>
+          </div>
+          <div>
+            <dt>経路ログ</dt>
+            <dd>{currentReview.route.length} points</dd>
+          </div>
+          <div>
+            <dt>終了時刻</dt>
+            <dd>{Math.round(currentReview.elapsedSimulationMs / 1000)} 秒</dd>
+          </div>
         </dl>
         <p className="data-notice">{DEMO_DATA_NOTICE}</p>
       </section>
@@ -94,10 +123,18 @@ export default function ReviewPage() {
           <p>同じseedなら主要な確率イベントを再現し、判断の差を比較できます。</p>
         </div>
         <div className="inline-actions">
-          <button className="primary-button" type="button" onClick={retrySameSeed}>
+          <button
+            className="primary-button"
+            type="button"
+            onClick={retrySameSeed}
+          >
             同じseedで再挑戦
           </button>
-          <button className="secondary-button" type="button" onClick={retryNewSeed}>
+          <button
+            className="secondary-button"
+            type="button"
+            onClick={retryNewSeed}
+          >
             別seedで再挑戦
           </button>
         </div>
