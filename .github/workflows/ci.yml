@@ -24,6 +24,8 @@ jobs:
           corepack prepare pnpm@11.12.0 --activate
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
+      - name: Format
+        run: pnpm format
       - name: Lint
         run: pnpm lint
       - name: Typecheck
