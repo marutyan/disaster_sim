@@ -78,4 +78,23 @@ describe("evaluateRights", () => {
 
     expect(result.allowed).toBe(false);
   });
+
+  it("reports every blocker in required-action order", () => {
+    const result = evaluateRights(
+      {
+        ...basePolicy,
+        decisions: {
+          ...basePolicy.decisions,
+          transform: "UNKNOWN",
+          publicDisplay: "DENY",
+        },
+      },
+      ["transform", "publicDisplay"],
+    );
+
+    expect(result.blockers).toEqual([
+      { action: "transform", decision: "UNKNOWN" },
+      { action: "publicDisplay", decision: "DENY" },
+    ]);
+  });
 });
