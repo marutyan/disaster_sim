@@ -223,6 +223,8 @@ export function SimulationShell() {
             fov={fov}
             reducedMotion={reducedMotion}
             replayActive={replayActive}
+            phase={run.phase}
+            simulationTimeMs={run.simulationTimeMs}
           />
         )}
 
