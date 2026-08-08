@@ -32,6 +32,7 @@ export function WorldView(props: WorldViewProps) {
     if (!canvas) {
       return;
     }
+    const activeCanvas = canvas;
 
     let stopped = false;
     let animationFrame = 0;
@@ -47,7 +48,7 @@ export function WorldView(props: WorldViewProps) {
       scene.fog = new THREE.Fog(0x07131e, 450, 1_800);
 
       const camera = new THREE.PerspectiveCamera(65, 1, 0.1, 3_000);
-      renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+      renderer = new THREE.WebGLRenderer({ canvas: activeCanvas, antialias: true });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
       const origin = Cesium.Cartesian3.fromDegrees(
@@ -181,8 +182,8 @@ export function WorldView(props: WorldViewProps) {
         if (!renderer) {
           return;
         }
-        const width = Math.max(canvas.clientWidth, 1);
-        const height = Math.max(canvas.clientHeight, 1);
+        const width = Math.max(activeCanvas.clientWidth, 1);
+        const height = Math.max(activeCanvas.clientHeight, 1);
         renderer.setSize(width, height, false);
         camera.aspect = width / height;
       }
