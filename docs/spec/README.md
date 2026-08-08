@@ -23,6 +23,7 @@
 | [04-architecture-and-interfaces.md](04-architecture-and-interfaces.md) | Frontend/Backend、Scenario Data Interface、状態管理、永続化、HPC接続 |
 | [05-validation-mvp-and-roadmap.md](05-validation-mvp-and-roadmap.md) | 非機能要件、検証、MVP DoD、明示的禁止事項、後続ロードマップ |
 | [06-source-registry.md](06-source-registry.md) | 採用・不採用データ候補、ライセンス根拠、一次情報レジストリ |
+| [07-resolved-ambiguities.md](07-resolved-ambiguities.md) | セルフレビューで固定した津波・安全判定・時刻・精度・物理の解釈境界 |
 
 ## 3. Normative language
 
@@ -93,6 +94,10 @@ Productionで必要な権利が1項目でも `UNKNOWN` のデータはProduction
 ### INV-007: Training, not emergency navigation
 
 本システムは平時の防災訓練用である。実災害時の避難判断を本システムへ依存させる設計・表現を禁止する。
+
+### INV-008: Unsupported replay cannot decide survival
+
+`illustrative` なReplayだけを根拠として、時間依存の死亡・負傷・避難成功判定を行ってはならない。詳細は [07-resolved-ambiguities.md](07-resolved-ambiguities.md) に従う。
 
 ## 7. Initial baseline
 
