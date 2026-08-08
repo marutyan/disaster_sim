@@ -86,7 +86,13 @@ export function SimulationShell() {
       router.replace("/setup");
       return;
     }
+    const initialPlayer = geographicToLocalMeters(DEMO_SCENARIO.center, {
+      latitude: stored.location.latitude,
+      longitude: stored.location.longitude,
+    });
     setSetup(stored);
+    setPlayer(initialPlayer);
+    setRoute([initialPlayer]);
     setRun(
       createSimulationRun({
         identity: {
