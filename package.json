@@ -1,0 +1,17 @@
+{
+  "name": "disaster-sim",
+  "version": "0.1.0",
+  "private": true,
+  "packageManager": "pnpm@11.12.0",
+  "engines": { "node": ">=22.0.0" },
+  "scripts": {
+    "dev": "pnpm --filter @disaster-sim/web dev",
+    "lint": "pnpm exec biome check apps/web packages/domain",
+    "typecheck": "pnpm --filter @disaster-sim/domain typecheck && pnpm --filter @disaster-sim/web typecheck",
+    "test": "pnpm --filter @disaster-sim/domain test && pnpm --filter @disaster-sim/web test",
+    "build": "pnpm --filter @disaster-sim/domain build && pnpm --filter @disaster-sim/web build"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.0.0"
+  }
+}
