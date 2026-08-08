@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   advanceSimulation,
   createSimulationRun,
-  setTimeScale,
   type SimulationConfig,
+  setTimeScale,
 } from "../src/simulation";
 
 const config: SimulationConfig = {
