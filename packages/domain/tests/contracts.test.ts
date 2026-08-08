@@ -10,7 +10,9 @@ const fixturePath = fileURLToPath(
 
 describe("scenario contract", () => {
   it("parses the shared golden scenario fixture", () => {
-    const scenario = parseScenario(JSON.parse(readFileSync(fixturePath, "utf8")));
+    const scenario = parseScenario(
+      JSON.parse(readFileSync(fixturePath, "utf8")),
+    );
 
     expect(scenario.manifest.scenarioId).toBe("tokushima-contract-demo");
     expect(scenario.hazardEnvelopes[0]?.temporalRepresentation).toBe("static");
