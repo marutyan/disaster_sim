@@ -29,8 +29,8 @@ export interface RemoteReviewResult {
     | "insufficient_evidence";
   simulatedOutcome:
     | "safe"
-    | "minor"
-    | "severe"
+    | "minor_injury"
+    | "severe_injury"
     | "fatal_equivalent"
     | "undetermined";
   trainingGoalReached: boolean;

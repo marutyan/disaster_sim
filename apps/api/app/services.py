@@ -55,9 +55,12 @@ def review_run(request: ReviewRequest) -> ReviewResponse:
         simulated_outcome = "undetermined"
     else:
         hazard_status = "insufficient_evidence"
-        simulated_outcome = (
-            request.injury_state if request.injury_state != "none" else "undetermined"
-        )
+        simulated_outcome = {
+            "none": "undetermined",
+            "minor": "minor_injury",
+            "severe": "severe_injury",
+            "fatal_equivalent": "fatal_equivalent",
+        }[request.injury_state]
 
     return ReviewResponse(
         official_status="unknown",

@@ -145,8 +145,8 @@ class ReviewResponse(ContractModel):
     ]
     simulated_outcome: Literal[
         "safe",
-        "minor",
-        "severe",
+        "minor_injury",
+        "severe_injury",
         "fatal_equivalent",
         "undetermined",
     ]
