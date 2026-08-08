@@ -2,8 +2,9 @@ import json
 from pathlib import Path
 
 import pytest
-from app.models import Scenario
 from pydantic import ValidationError
+
+from app.models import Scenario
 
 FIXTURE = (
     Path(__file__).resolve().parents[3] / "data" / "fixtures" / "contract-scenario.json"

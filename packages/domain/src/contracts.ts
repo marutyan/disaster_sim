@@ -187,26 +187,41 @@ function parseField(value: unknown, label: string): Field {
 
 function parseManifest(value: unknown): ScenarioManifest {
   const raw = record(value, "manifest");
-  const datasetVersionsRaw = record(raw.datasetVersions, "manifest.datasetVersions");
+  const datasetVersionsRaw = record(
+    raw.datasetVersions,
+    "manifest.datasetVersions",
+  );
   const datasetVersions = Object.fromEntries(
     Object.entries(datasetVersionsRaw).map(([key, item]) => [
       key,
       stringValue(item, `manifest.datasetVersions.${key}`),
     ]),
   );
-  const timeRange = record(raw.supportedTimeRangeMs, "manifest.supportedTimeRangeMs");
+  const timeRange = record(
+    raw.supportedTimeRangeMs,
+    "manifest.supportedTimeRangeMs",
+  );
 
   return {
     scenarioId: stringValue(raw.scenarioId, "manifest.scenarioId"),
-    scenarioVersion: stringValue(raw.scenarioVersion, "manifest.scenarioVersion"),
+    scenarioVersion: stringValue(
+      raw.scenarioVersion,
+      "manifest.scenarioVersion",
+    ),
     title: stringValue(raw.title, "manifest.title"),
     regionId: stringValue(raw.regionId, "manifest.regionId"),
     hazardTypes: stringArray(raw.hazardTypes, "manifest.hazardTypes"),
     datasetVersions,
-    artifactVersion: stringValue(raw.artifactVersion, "manifest.artifactVersion"),
+    artifactVersion: stringValue(
+      raw.artifactVersion,
+      "manifest.artifactVersion",
+    ),
     defaultSeed: stringValue(raw.defaultSeed, "manifest.defaultSeed"),
     supportedTimeRangeMs: {
-      start: numberValue(timeRange.start, "manifest.supportedTimeRangeMs.start"),
+      start: numberValue(
+        timeRange.start,
+        "manifest.supportedTimeRangeMs.start",
+      ),
       end: numberValue(timeRange.end, "manifest.supportedTimeRangeMs.end"),
     },
   };
@@ -243,7 +258,10 @@ function parseProvenance(value: unknown): ProvenanceRecord[] {
   return arrayValue(value, "provenance").map((entry, index) => {
     const raw = record(entry, `provenance[${index}]`);
     return {
-      provenanceId: stringValue(raw.provenanceId, `provenance[${index}].provenanceId`),
+      provenanceId: stringValue(
+        raw.provenanceId,
+        `provenance[${index}].provenanceId`,
+      ),
       evidenceClass: enumValue(
         raw.evidenceClass,
         evidenceClasses,
@@ -253,7 +271,10 @@ function parseProvenance(value: unknown): ProvenanceRecord[] {
         raw.sourceDatasetIds,
         `provenance[${index}].sourceDatasetIds`,
       ),
-      description: stringValue(raw.description, `provenance[${index}].description`),
+      description: stringValue(
+        raw.description,
+        `provenance[${index}].description`,
+      ),
     };
   });
 }
@@ -265,7 +286,9 @@ export function parseScenario(value: unknown): Scenario {
     "hazardEnvelopes",
   ).map((field, index) => parseField(field, `hazardEnvelopes[${index}]`));
 
-  if (hazardEnvelopes.some((field) => field.temporalRepresentation !== "static")) {
+  if (
+    hazardEnvelopes.some((field) => field.temporalRepresentation !== "static")
+  ) {
     throw new Error("hazard envelopes must use static temporal representation");
   }
 
