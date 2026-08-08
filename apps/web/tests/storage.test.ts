@@ -27,7 +27,9 @@ describe("stored setup", () => {
   });
 
   it("rejects an unknown storage version", () => {
-    expect(decodeStoredSetup(JSON.stringify({ ...setup, version: 999 }))).toBeNull();
+    expect(
+      decodeStoredSetup(JSON.stringify({ ...setup, version: 999 })),
+    ).toBeNull();
   });
 
   it("rejects malformed coordinates", () => {
