@@ -57,6 +57,10 @@ export function registerRemoteRun(
     seed: setup.seed,
     person: setup.person,
     timeOfDay: setup.timeOfDay,
+    location: {
+      latitude: setup.location.latitude,
+      longitude: setup.location.longitude,
+    },
     preparedness: setup.preparedness,
   });
 }

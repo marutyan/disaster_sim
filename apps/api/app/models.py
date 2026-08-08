@@ -1,6 +1,6 @@
 from typing import Literal
 
-from pydantic import BaseModel, ConfigDict, model_validator
+from pydantic import BaseModel, ConfigDict, Field as PydanticField, model_validator
 from pydantic.alias_generators import to_camel
 
 EvidenceClass = Literal[
@@ -94,11 +94,17 @@ class PreparednessProfile(ContractModel):
     offline_map: bool
 
 
+class RunLocation(ContractModel):
+    latitude: float = PydanticField(ge=-90, le=90)
+    longitude: float = PydanticField(ge=-180, le=180)
+
+
 class RunCreateRequest(ContractModel):
     scenario_id: str
     seed: str
     person: Literal["adult", "child", "older_adult", "wheelchair"]
     time_of_day: Literal["day", "night"]
+    location: RunLocation
     preparedness: PreparednessProfile
 
 

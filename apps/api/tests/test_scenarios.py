@@ -31,6 +31,7 @@ def test_create_run_returns_reproducible_identity_and_schedule() -> None:
         "seed": "integration-seed",
         "person": "adult",
         "timeOfDay": "day",
+        "location": {"latitude": 34.07, "longitude": 134.568},
         "preparedness": {
             "furnitureAnchored": True,
             "flashlight": True,
@@ -47,6 +48,10 @@ def test_create_run_returns_reproducible_identity_and_schedule() -> None:
     assert first.json()["identity"]["seed"] == "integration-seed"
     assert first.json()["schedule"]["startMs"] == -60_000
     assert first.json()["schedule"]["hazardReplayStartMs"] == 300_000
+
+    moved = {**request, "location": {"latitude": 34.071, "longitude": 134.568}}
+    moved_response = client.post("/api/runs", json=moved)
+    assert moved_response.json()["identity"]["initialConditionsHash"] != first.json()["identity"]["initialConditionsHash"]
 
 
 def test_review_does_not_claim_safety_from_illustrative_replay() -> None:

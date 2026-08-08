@@ -19,11 +19,15 @@ DEFAULT_SCHEDULE = RunSchedule(
 )
 
 
+def stable_hash(payload: object) -> str:
+    canonical = json.dumps(payload, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:24]
+
+
 def create_run(request: RunCreateRequest) -> RunCreateResponse:
-    canonical = json.dumps(request.model_dump(mode="json"), sort_keys=True, separators=(",", ":"))
-    run_id = hashlib.sha256(canonical.encode("utf-8")).hexdigest()[:24]
+    canonical_request = request.model_dump(mode="json")
     return RunCreateResponse(
-        run_id=run_id,
+        run_id=stable_hash(canonical_request),
         identity=RunIdentity(
             scenario_id=request.scenario_id,
             scenario_version="1.0.0-fixture",
@@ -31,15 +35,16 @@ def create_run(request: RunCreateRequest) -> RunCreateResponse:
             artifact_versions={"web": "0.1.0"},
             engine_version="0.1.0",
             seed=request.seed,
-            initial_conditions_hash=f"{request.time_of_day}:{request.person}",
-            player_profile_hash=request.person,
-            preparedness_profile_hash=hashlib.sha256(
-                json.dumps(
-                    request.preparedness.model_dump(mode="json"),
-                    sort_keys=True,
-                    separators=(",", ":"),
-                ).encode("utf-8")
-            ).hexdigest()[:24],
+            initial_conditions_hash=stable_hash(
+                {
+                    "location": request.location.model_dump(mode="json"),
+                    "timeOfDay": request.time_of_day,
+                }
+            ),
+            player_profile_hash=stable_hash({"person": request.person}),
+            preparedness_profile_hash=stable_hash(
+                request.preparedness.model_dump(mode="json")
+            ),
         ),
         schedule=DEFAULT_SCHEDULE,
     )
