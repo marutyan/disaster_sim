@@ -2,6 +2,6 @@ packages:
   - apps/web
   - packages/*
 
-onlyBuiltDependencies:
-  - esbuild
-  - sharp
+allowBuilds:
+  esbuild: true
+  sharp: true
