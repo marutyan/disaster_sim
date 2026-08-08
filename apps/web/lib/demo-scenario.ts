@@ -52,5 +52,19 @@ export const DEMO_SCENARIO = {
   ] as [number, number][][],
 } as const;
 
+export function isInsideDemoBounds(location: {
+  latitude: number;
+  longitude: number;
+}): boolean {
+  return (
+    Number.isFinite(location.latitude) &&
+    Number.isFinite(location.longitude) &&
+    location.latitude >= DEMO_SCENARIO.bounds.south &&
+    location.latitude <= DEMO_SCENARIO.bounds.north &&
+    location.longitude >= DEMO_SCENARIO.bounds.west &&
+    location.longitude <= DEMO_SCENARIO.bounds.east
+  );
+}
+
 export const DEMO_DATA_NOTICE =
   "このMVPの道路・浸水形状・避難施設位置はアプリ検証用の合成fixtureです。徳島県・徳島市の個別地点に対する公式予測ではありません。";
