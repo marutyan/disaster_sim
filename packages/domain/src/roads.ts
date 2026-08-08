@@ -38,7 +38,10 @@ export function degradeRoad(
   traversalCostMultiplier: number,
   provenanceId: string,
 ): RoadEdgeState {
-  if (!Number.isFinite(traversalCostMultiplier) || traversalCostMultiplier < 1) {
+  if (
+    !Number.isFinite(traversalCostMultiplier) ||
+    traversalCostMultiplier < 1
+  ) {
     throw new Error("degraded road cost multiplier must be at least 1");
   }
   if (road.state === "blocked") {

@@ -46,7 +46,10 @@ function validateDistribution(distribution: DamageDistribution): void {
     throw new Error("damage probabilities must be finite values in [0, 1]");
   }
 
-  const sum = probabilities.reduce((total, probability) => total + probability, 0);
+  const sum = probabilities.reduce(
+    (total, probability) => total + probability,
+    0,
+  );
   if (Math.abs(sum - 1) > 1e-9) {
     throw new Error("damage probabilities must sum to 1");
   }
