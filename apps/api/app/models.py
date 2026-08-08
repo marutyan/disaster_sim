@@ -13,6 +13,7 @@ EvidenceClass = Literal[
 ReplayType = Literal["official_timeseries", "app_physics", "app_derived", "illustrative"]
 SpatialRepresentation = Literal["raster", "vector", "mesh", "building", "road_edge", "point"]
 TemporalRepresentation = Literal["static", "time_series", "event_series"]
+InjuryState = Literal["none", "minor", "severe", "fatal_equivalent"]
 
 
 class ContractModel(BaseModel):
@@ -84,3 +85,70 @@ class Scenario(ContractModel):
         if any(field.temporal_representation != "static" for field in self.hazard_envelopes):
             raise ValueError("hazard envelopes must use static temporal representation")
         return self
+
+
+class PreparednessProfile(ContractModel):
+    furniture_anchored: bool
+    flashlight: bool
+    mobile_battery: bool
+    offline_map: bool
+
+
+class RunCreateRequest(ContractModel):
+    scenario_id: str
+    seed: str
+    person: Literal["adult", "child", "older_adult", "wheelchair"]
+    time_of_day: Literal["day", "night"]
+    preparedness: PreparednessProfile
+
+
+class RunIdentity(ContractModel):
+    scenario_id: str
+    scenario_version: str
+    dataset_versions: dict[str, str]
+    artifact_versions: dict[str, str]
+    engine_version: str
+    seed: str
+    initial_conditions_hash: str
+    player_profile_hash: str
+    preparedness_profile_hash: str
+
+
+class RunSchedule(ContractModel):
+    start_ms: int
+    shaking_start_ms: int
+    shaking_end_ms: int
+    hazard_replay_start_ms: int
+    resolve_at_ms: int
+
+
+class RunCreateResponse(ContractModel):
+    run_id: str
+    identity: RunIdentity
+    schedule: RunSchedule
+
+
+class ReviewRequest(ContractModel):
+    scenario_id: str
+    target_reached: bool
+    target_distance_meters: float
+    injury_state: InjuryState
+    replay_evidence_class: EvidenceClass
+
+
+class ReviewResponse(ContractModel):
+    official_status: Literal["designated", "non_designated", "unknown"]
+    hazard_status: Literal[
+        "outside_official_envelope",
+        "inside_official_envelope",
+        "insufficient_evidence",
+    ]
+    simulated_outcome: Literal[
+        "safe",
+        "minor",
+        "severe",
+        "fatal_equivalent",
+        "undetermined",
+    ]
+    training_goal_reached: bool
+    notes: list[str]
