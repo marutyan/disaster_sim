@@ -1,0 +1,59 @@
+{
+  "manifest": {
+    "scenarioId": "tokushima-contract-demo",
+    "scenarioVersion": "1.0.0",
+    "title": "徳島市契約テスト",
+    "regionId": "tokushima-demo",
+    "hazardTypes": ["earthquake", "tsunami"],
+    "datasetVersions": {
+      "demo-seismic": "1.0.0",
+      "demo-inundation": "1.0.0"
+    },
+    "artifactVersion": "1.0.0",
+    "defaultSeed": "contract-seed",
+    "supportedTimeRangeMs": {
+      "start": -60000,
+      "end": 1800000
+    }
+  },
+  "hazardEnvelopes": [
+    {
+      "fieldId": "max-inundation-depth",
+      "quantity": "max_water_depth",
+      "unit": "m",
+      "spatialRepresentation": "raster",
+      "temporalRepresentation": "static",
+      "resolutionMeters": 10,
+      "crs": "EPSG:4326",
+      "artifactUri": "fixture://max-inundation-depth",
+      "provenanceId": "prov-inundation"
+    }
+  ],
+  "replay": {
+    "replayType": "illustrative",
+    "fields": [],
+    "events": [
+      {
+        "eventId": "replay-start",
+        "timeMs": 900000,
+        "kind": "tsunami_visualization_start",
+        "evidenceClass": "illustrative",
+        "provenanceId": "prov-replay"
+      }
+    ]
+  },
+  "provenance": [
+    {
+      "provenanceId": "prov-inundation",
+      "evidenceClass": "official_published",
+      "sourceDatasetIds": ["demo-inundation"],
+      "description": "Contract fixture representing an official static hazard envelope."
+    },
+    {
+      "provenanceId": "prov-replay",
+      "evidenceClass": "illustrative",
+      "sourceDatasetIds": [],
+      "description": "Application-owned illustrative replay fixture."
+    }
+  ]
+}
