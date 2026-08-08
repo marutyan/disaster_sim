@@ -28,6 +28,10 @@ describe("evaluateRights", () => {
     expect(result).toEqual({ allowed: true, blockers: [] });
   });
 
+  it("allows an empty required-action set", () => {
+    expect(evaluateRights(basePolicy, [])).toEqual({ allowed: true, blockers: [] });
+  });
+
   it("blocks a required UNKNOWN decision", () => {
     const result = evaluateRights(
       {
