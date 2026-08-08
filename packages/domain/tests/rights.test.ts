@@ -29,7 +29,10 @@ describe("evaluateRights", () => {
   });
 
   it("allows an empty required-action set", () => {
-    expect(evaluateRights(basePolicy, [])).toEqual({ allowed: true, blockers: [] });
+    expect(evaluateRights(basePolicy, [])).toEqual({
+      allowed: true,
+      blockers: [],
+    });
   });
 
   it("blocks a required UNKNOWN decision", () => {
