@@ -10,7 +10,9 @@ describe("injury state", () => {
   });
 
   it("does not allow illustrative effects to authoritatively injure the player", () => {
-    expect(applyInjury("none", "fatal_equivalent", "illustrative")).toBe("none");
+    expect(applyInjury("none", "fatal_equivalent", "illustrative")).toBe(
+      "none",
+    );
   });
 
   it("allows an evidence-backed simulation event to reach fatal equivalent", () => {
