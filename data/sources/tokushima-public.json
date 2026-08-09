@@ -1,0 +1,139 @@
+{
+  "manifestVersion": 1,
+  "sources": [
+    {
+      "sourceId": "tokushima-tsunami-max-inundation",
+      "title": "徳島県 津波浸水想定（最大浸水深）",
+      "publisher": "徳島県",
+      "catalogUrl": "https://opendata.pref.tokushima.lg.jp/dataset/5110.html",
+      "datasetRole": "hazard_envelope",
+      "productionEnabled": true,
+      "expectedLicenseFamily": "CC-BY",
+      "expectedFormats": ["SHP", "ZIP"],
+      "rights": {
+        "fetch": "ALLOW",
+        "localStore": "ALLOW",
+        "transform": "ALLOW",
+        "createDerivative": "ALLOW",
+        "cacheServerSide": "ALLOW",
+        "redistributeDerivative": "ALLOW",
+        "publicDisplay": "ALLOW",
+        "commercialUse": "ALLOW",
+        "attributionRequired": true,
+        "modificationNoticeRequired": true
+      }
+    },
+    {
+      "sourceId": "tokushima-nankai-seismic-intensity",
+      "title": "徳島県 南海トラフ巨大地震 震度分布",
+      "publisher": "徳島県",
+      "catalogUrl": "https://opendata.pref.tokushima.lg.jp/dataset/1176.html",
+      "datasetRole": "seismic_intensity",
+      "productionEnabled": true,
+      "expectedLicenseFamily": "CC-BY",
+      "expectedFormats": ["SHP", "ZIP"],
+      "rights": {
+        "fetch": "ALLOW",
+        "localStore": "ALLOW",
+        "transform": "ALLOW",
+        "createDerivative": "ALLOW",
+        "cacheServerSide": "ALLOW",
+        "redistributeDerivative": "ALLOW",
+        "publicDisplay": "ALLOW",
+        "commercialUse": "ALLOW",
+        "attributionRequired": true,
+        "modificationNoticeRequired": true
+      }
+    },
+    {
+      "sourceId": "tokushima-liquefaction-risk",
+      "title": "徳島県 南海トラフ巨大地震 液状化危険度",
+      "publisher": "徳島県",
+      "catalogUrl": "https://opendata.pref.tokushima.lg.jp/dataset/1177.html",
+      "datasetRole": "liquefaction_risk",
+      "productionEnabled": true,
+      "expectedLicenseFamily": "CC-BY",
+      "expectedFormats": ["SHP", "ZIP"],
+      "rights": {
+        "fetch": "ALLOW",
+        "localStore": "ALLOW",
+        "transform": "ALLOW",
+        "createDerivative": "ALLOW",
+        "cacheServerSide": "ALLOW",
+        "redistributeDerivative": "ALLOW",
+        "publicDisplay": "ALLOW",
+        "commercialUse": "ALLOW",
+        "attributionRequired": true,
+        "modificationNoticeRequired": true
+      }
+    },
+    {
+      "sourceId": "tokushima-emergency-evacuation-sites",
+      "title": "徳島県 緊急避難場所（津波を含む災害種別別公開データ）",
+      "publisher": "徳島県",
+      "catalogUrl": "https://opendata.pref.tokushima.lg.jp/dataset/487.html",
+      "datasetRole": "evacuation_site",
+      "productionEnabled": true,
+      "expectedLicenseFamily": "CC-BY",
+      "expectedFormats": ["CSV"],
+      "rights": {
+        "fetch": "ALLOW",
+        "localStore": "ALLOW",
+        "transform": "ALLOW",
+        "createDerivative": "ALLOW",
+        "cacheServerSide": "ALLOW",
+        "redistributeDerivative": "ALLOW",
+        "publicDisplay": "ALLOW",
+        "commercialUse": "ALLOW",
+        "attributionRequired": true,
+        "modificationNoticeRequired": true
+      }
+    },
+    {
+      "sourceId": "tokushima-tsunami-30cm-arrival-time",
+      "title": "徳島県 浸水深30cm到達時間",
+      "publisher": "徳島県",
+      "catalogUrl": "https://opendata.pref.tokushima.lg.jp/dataset/5145.html",
+      "datasetRole": "blocked_reference",
+      "productionEnabled": false,
+      "expectedLicenseFamily": "CC-BY-ND",
+      "expectedFormats": ["SHP", "ZIP"],
+      "rights": {
+        "fetch": "ALLOW",
+        "localStore": "ALLOW",
+        "transform": "UNKNOWN",
+        "createDerivative": "DENY",
+        "cacheServerSide": "UNKNOWN",
+        "redistributeDerivative": "DENY",
+        "publicDisplay": "UNKNOWN",
+        "commercialUse": "ALLOW",
+        "attributionRequired": true,
+        "modificationNoticeRequired": false
+      },
+      "blockedReason": "CC BY-ND source is excluded from transformed/derived production artifacts by project policy."
+    },
+    {
+      "sourceId": "tokushima-tsunami-reference-water-level",
+      "title": "徳島県 津波基準水位",
+      "publisher": "徳島県",
+      "catalogUrl": "https://opendata.pref.tokushima.lg.jp/dataset/5144.html",
+      "datasetRole": "blocked_reference",
+      "productionEnabled": false,
+      "expectedLicenseFamily": "CC-BY-ND",
+      "expectedFormats": ["SHP", "ZIP"],
+      "rights": {
+        "fetch": "ALLOW",
+        "localStore": "ALLOW",
+        "transform": "UNKNOWN",
+        "createDerivative": "DENY",
+        "cacheServerSide": "UNKNOWN",
+        "redistributeDerivative": "DENY",
+        "publicDisplay": "UNKNOWN",
+        "commercialUse": "ALLOW",
+        "attributionRequired": true,
+        "modificationNoticeRequired": false
+      },
+      "blockedReason": "CC BY-ND source is excluded from transformed/derived production artifacts by project policy."
+    }
+  ]
+}
