@@ -1,6 +1,11 @@
 from fastapi import FastAPI
 
-app = FastAPI(title="Disaster Simulation API", version="0.0.0")
+from .routes.datasets import router as datasets_router
+from .routes.scenarios import router as scenarios_router
+
+app = FastAPI(title="Disaster Simulation API", version="0.1.0")
+app.include_router(scenarios_router)
+app.include_router(datasets_router)
 
 
 @app.get("/health")
