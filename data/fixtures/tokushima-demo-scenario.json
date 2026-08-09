@@ -1,0 +1,58 @@
+{
+  "manifest": {
+    "scenarioId": "tokushima-demo",
+    "scenarioVersion": "1.0.0-fixture",
+    "title": "徳島市デモ領域：南海トラフ地震・津波",
+    "regionId": "tokushima-application-owned-demo",
+    "hazardTypes": ["earthquake", "tsunami"],
+    "datasetVersions": {
+      "application-owned-fixture": "1.0.0"
+    },
+    "artifactVersion": "1.0.0",
+    "defaultSeed": "tokushima-demo-001",
+    "supportedTimeRangeMs": {
+      "start": -60000,
+      "end": 900000
+    }
+  },
+  "hazardEnvelopes": [
+    {
+      "fieldId": "synthetic-max-inundation-envelope",
+      "quantity": "max_water_depth",
+      "unit": "m",
+      "spatialRepresentation": "vector",
+      "temporalRepresentation": "static",
+      "resolutionMeters": 10,
+      "crs": "EPSG:4326",
+      "artifactUri": "fixture://tokushima-demo/max-inundation-envelope",
+      "provenanceId": "prov-synthetic-envelope"
+    }
+  ],
+  "replay": {
+    "replayType": "illustrative",
+    "fields": [],
+    "events": [
+      {
+        "eventId": "fixture-tsunami-visualization",
+        "timeMs": 300000,
+        "kind": "tsunami_visualization_start",
+        "evidenceClass": "illustrative",
+        "provenanceId": "prov-synthetic-replay"
+      }
+    ]
+  },
+  "provenance": [
+    {
+      "provenanceId": "prov-synthetic-envelope",
+      "evidenceClass": "app_derived",
+      "sourceDatasetIds": [],
+      "description": "Application-owned synthetic hazard envelope used only for MVP interaction verification."
+    },
+    {
+      "provenanceId": "prov-synthetic-replay",
+      "evidenceClass": "illustrative",
+      "sourceDatasetIds": [],
+      "description": "Application-owned visual tsunami replay with no official arrival-time claim."
+    }
+  ]
+}

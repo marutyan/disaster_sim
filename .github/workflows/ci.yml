@@ -56,3 +56,14 @@ jobs:
         run: ruff check apps/api/app apps/api/tests
       - name: Test
         run: pytest apps/api/tests -q
+
+  containers:
+    needs: [web, api]
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build API image
+        run: docker build -f apps/api/Dockerfile -t disaster-sim-api:test .
+      - name: Build Web image
+        run: docker build -f apps/web/Dockerfile -t disaster-sim-web:test .

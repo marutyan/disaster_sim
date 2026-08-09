@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import "maplibre-gl/dist/maplibre-gl.css";
 import "./globals.css";
+import "./integration.css";
 
 export const metadata: Metadata = {
   title: "防災疑似体験 | Disaster Simulation",
