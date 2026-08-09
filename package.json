@@ -6,7 +6,8 @@
   "engines": { "node": ">=22.0.0" },
   "scripts": {
     "dev": "pnpm --filter @disaster-sim/web dev",
-    "lint": "pnpm exec biome check apps/web packages/domain",
+    "format": "pnpm exec biome format --write apps/web packages/domain",
+    "lint": "pnpm exec biome lint apps/web packages/domain",
     "typecheck": "pnpm --filter @disaster-sim/domain typecheck && pnpm --filter @disaster-sim/web typecheck",
     "test": "pnpm --filter @disaster-sim/domain test && pnpm --filter @disaster-sim/web test",
     "build": "pnpm --filter @disaster-sim/domain build && pnpm --filter @disaster-sim/web build"
