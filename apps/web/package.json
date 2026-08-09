@@ -1,0 +1,25 @@
+{
+  "name": "@disaster-sim/web",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "lint": "eslint src --max-warnings=0",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test",
+    "build": "next build"
+  },
+  "dependencies": {
+    "next": "16.2.11",
+    "react": "19.2.7",
+    "react-dom": "19.2.7"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "eslint": "^9.0.0",
+    "eslint-config-next": "16.2.11",
+    "typescript": "^6.0.0"
+  }
+}
