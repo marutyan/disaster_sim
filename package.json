@@ -1,0 +1,17 @@
+{
+  "name": "disaster-sim",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@11.12.0",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "lint": "pnpm -r --if-present run lint",
+    "typecheck": "pnpm -r --if-present run typecheck",
+    "test": "pnpm -r --if-present run test",
+    "build": "pnpm -r --if-present run build",
+    "check:foundation": "node scripts/verify-foundation.mjs",
+    "check:secrets": "node scripts/check-no-secrets.mjs"
+  }
+}
