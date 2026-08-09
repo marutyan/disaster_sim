@@ -50,3 +50,15 @@ test('unsupported time multiplier is rejected', () => {
 
   assert.throws(() => clock.setSpeed(3), /Unsupported simulation speed/);
 });
+
+test('invalid tick duration is rejected', () => {
+  assert.throws(() => new SimulationClock({ tickMs: 0 }), /tickMs/);
+  assert.throws(() => new SimulationClock({ tickMs: Number.NaN }), /tickMs/);
+});
+
+test('negative or non-finite render delta is rejected', () => {
+  const clock = new SimulationClock({ tickMs: 50 });
+
+  assert.throws(() => clock.advance(-1), /realDeltaMs/);
+  assert.throws(() => clock.advance(Number.POSITIVE_INFINITY), /realDeltaMs/);
+});
